@@ -4,7 +4,7 @@
  */
 
 using System;
-using System.IO;    // Wymagana przestrzeń nazwy, by móc operować plikami
+using System.IO;    
 
 namespace TE_LOD_DesktopFiles
 {
@@ -12,9 +12,38 @@ namespace TE_LOD_DesktopFiles
     {
         public static void Main(string[] args)
         {
-            // Obejmij kod obsługą błędów
+            try
+            {
+                string path = @Console.ReadLine();
+                if (File.Exists(path))
+                {
+                    Console.WriteLine(File.ReadAllText(path));
+                }
+                else
+                {
+                    File.Create(path).Close();
+                    StreamWriter sw = new StreamWriter(path);
+                    Console.WriteLine("Co ma być napisanew pliku ?");
+                    napisz();
+                    void napisz()
+                    {
+                        string data = Console.ReadLine();
 
+                        if (data.EndsWith("END;;")) sw.Close();
+                        else
+                        {
+                            sw.WriteLine(data);
+                            napisz();
+                        }
 
+                    }
+
+                }
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
